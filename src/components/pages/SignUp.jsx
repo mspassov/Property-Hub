@@ -3,6 +3,13 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowRightIcon } from "../../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../../assets/svg/visibilityIcon.svg";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase.config";
 
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,6 +21,35 @@ const SignUp = () => {
 
   const navigate = useNavigate();
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const userCreds = await createUserWithEmailAndPassword(
+        auth,
+        registerInfo.email,
+        registerInfo.password
+      );
+      const user = userCreds.user;
+
+      updateProfile(auth.currentUser, { displayName: registerInfo.name });
+
+      //Create an object to submit to Firestore
+      const userInfo = {
+        name: registerInfo.name,
+        email: registerInfo.email,
+        timestamp: serverTimestamp(),
+      };
+      await setDoc(doc(db, "users", user.uid), userInfo);
+
+      //Once user has registered, navigate back to homepage
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="pageContainer">
@@ -21,7 +57,7 @@ const SignUp = () => {
           <p className="pageHeader">Welcome Back!</p>
         </header>
 
-        <form>
+        <form onSubmit={onSubmit}>
           <input
             type="text"
             className="nameInput"
