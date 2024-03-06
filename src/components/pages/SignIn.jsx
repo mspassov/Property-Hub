@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { toast } from "react-toastify";
 import { ReactComponent as ArrowRightIcon } from "../../assets/svg/keyboardArrowRightIcon.svg";
 import visibilityIcon from "../../assets/svg/visibilityIcon.svg";
 
@@ -10,6 +12,25 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const auth = getAuth();
+      const userCreds = await signInWithEmailAndPassword(
+        auth,
+        loginInfo.email,
+        loginInfo.password
+      );
+
+      if (userCreds.user) {
+        navigate("/");
+      }
+    } catch (error) {
+      toast.error("Incorrect username or password. Please try again!");
+    }
+  };
+
   return (
     <>
       <div className="pageContainer">
@@ -17,7 +38,7 @@ const SignIn = () => {
           <p className="pageHeader">Welcome Back!</p>
         </header>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="email"
             className="emailInput"

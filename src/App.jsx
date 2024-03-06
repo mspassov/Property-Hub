@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Explore from "./components/pages/Explore";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import Offers from "./components/pages/Offers";
@@ -15,13 +17,15 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Explore />} />
           <Route path="/offers" element={<Offers />} />
-          <Route path="/profile" element={<SignIn />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
         </Routes>
         <Navbar />
       </Router>
+
+      <ToastContainer />
     </>
   );
 };

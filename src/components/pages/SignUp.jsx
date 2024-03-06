@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as ArrowRightIcon } from "../../assets/svg/keyboardArrowRightIcon.svg";
+import { toast } from "react-toastify";
 import visibilityIcon from "../../assets/svg/visibilityIcon.svg";
 import {
   getAuth,
@@ -46,7 +47,7 @@ const SignUp = () => {
       //Once user has registered, navigate back to homepage
       navigate("/");
     } catch (error) {
-      console.log(error);
+      toast.error("Could not register user. Please try again!");
     }
   };
 
