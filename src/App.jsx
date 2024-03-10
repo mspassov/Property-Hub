@@ -10,6 +10,7 @@ import Profile from "./components/pages/Profile";
 import SignIn from "./components/pages/SignIn";
 import SignUp from "./components/pages/SignUp";
 import Navbar from "./components/Navbar";
+import CreateListing from "./components/pages/CreateListing";
 import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/profile" element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
+          <Route path="/create" element={<CreateListing />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ForgotPassword />} />
