@@ -96,7 +96,7 @@ const CreateListing = () => {
     const prepImage = async (image) => {
       return new Promise((resolve, reject) => {
         const storage = getStorage();
-        const fileName = `${auth.currentUser}-${uuidv4()}`;
+        const fileName = `${auth.currentUser.email}-${uuidv4()}`;
         const storageRef = ref(storage, "images/" + fileName);
 
         const uploadTask = uploadBytesResumable(storageRef, image);
@@ -149,6 +149,7 @@ const CreateListing = () => {
       regularPrice,
       discountedPrice,
       geolocation: geolocationObj,
+      timestamp: serverTimestamp(),
       imageUrls: [...imgUrls],
     };
 

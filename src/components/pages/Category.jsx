@@ -35,7 +35,7 @@ const Category = () => {
           listingRef,
           where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
-          limit(100)
+          limit(10)
         );
 
         //Execute the query
@@ -49,7 +49,6 @@ const Category = () => {
             data: listing.data(),
           });
         });
-        console.log(listingsArr);
 
         setListings(listingsArr);
 
