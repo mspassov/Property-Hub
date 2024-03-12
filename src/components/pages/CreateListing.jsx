@@ -1,7 +1,18 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  list,
+} from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase.config";
+import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Spinner from "../Spinner";
 
 const CreateListing = () => {
@@ -51,8 +62,108 @@ const CreateListing = () => {
     });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
+    if (+discountedPrice >= +regularPrice) {
+      setLoading(false);
+      toast.error(
+        "Discounted price needs to be less than regular price. Please try again!"
+      );
+      return;
+    }
+    if (images > 6) {
+      setLoading(false);
+      toast.error("Cannot upload more than 6 images. Please try again!");
+      return;
+    }
+
+    let geolocationObj = {};
+    let location;
+
+    const res = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GOOGLE_KEY}`
+    );
+    const data = await res.json();
+
+    geolocationObj.lat = data.results[0]?.geometry.location.lat ?? 0;
+    geolocationObj.lng = data.results[0]?.geometry.location.lng ?? 0;
+    location =
+      data.results.length > 0 ? data.results[0]?.formatted_address : address;
+
+    //Prep images for upload to Firebase
+    const prepImage = async (image) => {
+      return new Promise((resolve, reject) => {
+        const storage = getStorage();
+        const fileName = `${auth.currentUser}-${uuidv4()}`;
+        const storageRef = ref(storage, "images/" + fileName);
+
+        const uploadTask = uploadBytesResumable(storageRef, image);
+
+        //From Google Firebase documentation
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log("Upload is " + progress + "% done");
+            switch (snapshot.state) {
+              case "paused":
+                console.log("Upload is paused");
+                break;
+              case "running":
+                console.log("Upload is running");
+                break;
+            }
+          },
+          (error) => {
+            reject(error);
+          },
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              resolve(downloadURL);
+            });
+          }
+        );
+      });
+    };
+
+    const imgUrls = await Promise.all(
+      [...images].map((img) => prepImage(img))
+    ).catch(() => {
+      setLoading(false);
+      toast.error("Could not upload images. Must be under 2MB each");
+      return;
+    });
+
+    const listingObj = {
+      type,
+      name,
+      bedrooms,
+      bathrooms,
+      parking,
+      furnished,
+      location,
+      offer,
+      regularPrice,
+      discountedPrice,
+      geolocation: geolocationObj,
+      imageUrls: [...imgUrls],
+    };
+
+    if (offer == false) {
+      delete listingObj.discountedPrice;
+    }
+
+    //upload listing to Firebase
+    console.log(listingObj);
+    const docRef = await addDoc(collection(db, "listings"), listingObj);
+    toast.success("Listing created successfully!");
+
+    navigate(`/category/${listingObj.type}/${docRef.id}`);
+
+    setLoading(false);
   };
 
   const onMutate = (e) => {

@@ -14,6 +14,7 @@ import { db } from "../../firebase.config";
 import { toast } from "react-toastify";
 import Spinner from "../Spinner";
 import ListingItem from "../ListingItem";
+import { list } from "firebase/storage";
 
 const Category = () => {
   const [listings, setListings] = useState(null);
@@ -34,7 +35,7 @@ const Category = () => {
           listingRef,
           where("type", "==", params.categoryName),
           orderBy("timestamp", "desc"),
-          limit(10)
+          limit(100)
         );
 
         //Execute the query
@@ -48,6 +49,7 @@ const Category = () => {
             data: listing.data(),
           });
         });
+        console.log(listingsArr);
 
         setListings(listingsArr);
 
@@ -58,7 +60,7 @@ const Category = () => {
     };
 
     getListings();
-  }, []);
+  }, [params.categoryName]);
 
   return (
     <div className="category">
