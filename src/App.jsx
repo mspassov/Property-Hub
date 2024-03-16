@@ -12,6 +12,8 @@ import SignUp from "./components/pages/SignUp";
 import Navbar from "./components/Navbar";
 import CreateListing from "./components/pages/CreateListing";
 import PrivateRoute from "./components/PrivateRoute";
+import Listing from "./components/pages/Listing";
+import Contact from "./components/pages/Contact";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
           <Route path="/" element={<Explore />} />
           <Route path="/offers" element={<Offers />} />
           <Route path="/category/:categoryName" element={<Category />} />
+          <Route path="/category/:categoryName/:id" element={<Listing />} />
+          <Route path="/contact/:id" element={<Contact />} />
           <Route path="/profile" element={<PrivateRoute />}>
             <Route path="/profile" element={<Profile />} />
           </Route>
