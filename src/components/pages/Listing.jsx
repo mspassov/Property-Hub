@@ -80,11 +80,11 @@ const Listing = () => {
           <Map
             height={350}
             defaultCenter={[+listing.geolocation.lat, +listing.geolocation.lng]}
-            defaultZoom={11}
+            defaultZoom={13}
           >
             <Marker
               width={50}
-            //   anchor={[+listing.geolocation.lat, +listing.geolocation.lng]}
+              anchor={[+listing.geolocation.lat, +listing.geolocation.lng]}
             ></Marker>
           </Map>
         </div>
