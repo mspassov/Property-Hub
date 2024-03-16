@@ -6,7 +6,7 @@ import { db } from "../../firebase.config";
 import { getAuth } from "firebase/auth";
 import Spinner from "../Spinner";
 import shareIcon from "../../assets/svg/shareIcon.svg";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { Map, Marker } from "pigeon-maps";
 
 const Listing = () => {
   const [listing, setListing] = useState(null);
@@ -24,7 +24,6 @@ const Listing = () => {
 
       if (docSnapshot.exists()) {
         setListing(docSnapshot.data());
-        console.log(listing);
         setLoading(false);
       }
     };
@@ -78,11 +77,16 @@ const Listing = () => {
 
         <p className="listingLocationTitle">Location</p>
         <div className="leafletContainer">
-          {/* <MapContainer
-          // style={{ height: "100%", width: "100%" }}
-          // center={[listing?.geolocation?.lat, listing?.geolocation?.lng]}
-          // zoom={13}
-          ></MapContainer> */}
+          <Map
+            height={350}
+            defaultCenter={[+listing.geolocation.lat, +listing.geolocation.lng]}
+            defaultZoom={11}
+          >
+            <Marker
+              width={50}
+            //   anchor={[+listing.geolocation.lat, +listing.geolocation.lng]}
+            ></Marker>
+          </Map>
         </div>
 
         {auth.currentUser?.uid !== listing.userRef && (
