@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import rentCategoryImage from "../../assets/jpg/rentCategoryImage.jpg";
 import sellCategoryImage from "../../assets/jpg/sellCategoryImage.jpg";
+import ExploreSwiper from "../ExploreSwiper";
+
 
 const Explore = () => {
   return (
@@ -11,7 +13,7 @@ const Explore = () => {
       </header>
 
       <main>
-        {/* Slider */}
+        <ExploreSwiper />
 
         <p className="exploreCategoryHeading">Categories</p>
         <div className="exploreCategories">
