@@ -50,6 +50,7 @@ const Listing = () => {
 
   const regPrice = +listing.regularPrice;
   const discPrice = +listing.discountedPrice;
+  console.log(regPrice);
 
   return (
     <main>
@@ -79,8 +80,8 @@ const Listing = () => {
         <p className="listingName">
           {listing.name} - $
           {listing.offer
-            ? regPrice.toLocaleString()
-            : discPrice.toLocaleString()}
+            ? discPrice.toLocaleString()
+            : regPrice.toLocaleString()}
         </p>
         <p className="listingLocation">{listing.location}</p>
         <p className="listingType">

@@ -14,6 +14,7 @@ import CreateListing from "./components/pages/CreateListing";
 import PrivateRoute from "./components/PrivateRoute";
 import Listing from "./components/pages/Listing";
 import Contact from "./components/pages/Contact";
+import EditListing from "./components/pages/EditListing";
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="/create" element={<CreateListing />} />
+          <Route path="/edit/:id" element={<EditListing />} />
           <Route path="/login" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ForgotPassword />} />

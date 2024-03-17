@@ -6,7 +6,6 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
-  list,
 } from "firebase/storage";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "../../firebase.config";
@@ -151,6 +150,7 @@ const CreateListing = () => {
       geolocation: geolocationObj,
       timestamp: serverTimestamp(),
       imageUrls: [...imgUrls],
+      userRef: auth.currentUser.uid,
     };
 
     if (offer == false) {
