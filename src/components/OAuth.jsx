@@ -37,7 +37,11 @@ const OAuth = () => {
 
   return (
     <div className="socialLogin">
-      <p>{location.pathname == "/login" ? "Sign in" : "Sign up"} with</p>
+      <p>
+        <strong>
+          {location.pathname == "/login" ? "Sign in" : "Sign up"} with{" "}
+        </strong>
+      </p>
       <button className="socialIconDiv" onClick={handleClick}>
         <img className="socialIconImg" src={googleIcon} alt="Google" />
       </button>

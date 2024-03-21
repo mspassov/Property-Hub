@@ -85,6 +85,11 @@ const SignIn = () => {
               <ArrowRightIcon fill="white" width="34px" height="34px" />
             </button>
           </div>
+          <div className="signInBar">
+            <Link to="/signup" className="forgotPasswordLink">
+              Create account using email
+            </Link>
+          </div>
         </form>
 
         <OAuth />
