@@ -9,7 +9,7 @@ Property Hub is a online marketplace where users can list their homes for sale o
 - Create listings for sale or for rent
 - Update and delete listings
 - Add discount prices
-- Browse listings
+- Browse listings and contact landlord via email
 
 ### Key Learnings
 - Advanced React (routing, protected routes, complex components, hooks, etc.)
